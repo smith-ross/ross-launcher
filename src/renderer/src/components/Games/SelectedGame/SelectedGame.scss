@@ -1,0 +1,100 @@
+.selected-game__inner {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+
+  &--empty {
+    align-items: center;
+    justify-content: center;
+    color: var(--text-muted);
+    font-size: 14px;
+  }
+}
+
+.game-banner {
+  width: 100%;
+  height: 200px;
+  flex-shrink: 0;
+  background-color: var(--surface-alt);
+  background-size: cover;
+  background-position: center;
+}
+
+.game-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 0 24px 24px;
+}
+
+.game-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: -32px;
+  margin-bottom: 20px;
+}
+
+.game-icon {
+  width: 72px;
+  height: 72px;
+  flex-shrink: 0;
+  border-radius: var(--radius);
+  background-color: var(--surface-alt);
+  background-size: cover;
+  background-position: center;
+  border: 3px solid var(--secondary);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.35);
+}
+
+.game-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--font-color-default);
+}
+
+.game-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.play-btn,
+.download-btn {
+  width: 150px;
+}
+
+.game-progress {
+  width: 100%;
+  max-width: 320px;
+  height: 6px;
+  border-radius: var(--radius-sm);
+  background-color: var(--primary);
+  overflow: hidden;
+  margin-bottom: 14px;
+
+  &__fill {
+    height: 100%;
+    background-color: var(--accent-hover);
+    transition: width 150ms ease-out;
+  }
+}
+
+.game-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.game-status,
+.game-version {
+  font-size: 13px;
+  color: var(--text-muted);
+}
+
+.game-error {
+  font-size: 13px;
+  color: var(--danger);
+}

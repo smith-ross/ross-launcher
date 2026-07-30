@@ -1,0 +1,79 @@
+name: Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Prevent two pushes from racing to compute the same "next version".
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # Next version = latest existing release tag, patch bumped by one.
+      # Driven by GitHub releases (not package.json) so a failed run (see
+      # below) can't throw off the sequence. The very first run, before any
+      # release exists, seeds from package.json's current version instead of
+      # starting over at 0.0.1.
+      - name: Determine next version
+        id: version
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          latest_tag=$(gh release list --limit 1 --json tagName --jq '.[0].tagName' 2>/dev/null)
+          if [ -z "$latest_tag" ]; then
+            new_version=$(node -p "require('./package.json').version")
+          else
+            version=${latest_tag#v}
+            IFS='.' read -r major minor patch <<< "$version"
+            new_version="$major.$minor.$((patch + 1))"
+          fi
+          echo "version=$new_version" >> "$GITHUB_OUTPUT"
+          echo "tag=v$new_version" >> "$GITHUB_OUTPUT"
+
+      - name: Bump package.json version
+        shell: bash
+        run: npm version ${{ steps.version.outputs.version }} --no-git-tag-version --allow-same-version
+
+      - name: Build Windows installer
+        run: npm run build:win
+
+      # Only commit/tag/release once the build has actually succeeded, so a
+      # broken build never leaves a stray version bump on main.
+      - name: Commit version bump
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "chore: release ${{ steps.version.outputs.tag }} [skip ci]"
+          git push
+
+      - name: Create GitHub release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "${{ steps.version.outputs.tag }}" dist/*.exe \
+            --title "${{ steps.version.outputs.tag }}" \
+            --generate-notes

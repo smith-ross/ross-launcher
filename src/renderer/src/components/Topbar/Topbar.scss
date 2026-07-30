@@ -1,0 +1,100 @@
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 36px;
+  background-color: var(--primary);
+  user-select: none;
+  border-bottom: 2px solid var(--secondary);
+
+  &__drag {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    padding-left: 12px;
+    -webkit-app-region: drag; // makes this area draggable
+  }
+
+  &__title {
+    color: var(--font-color-default);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  &__version {
+    margin-left: 8px;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  &__controls {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    -webkit-app-region: no-drag; // buttons must opt OUT of drag or clicks won't register
+  }
+
+  &__update {
+    all: unset;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: background-color 120ms ease, color 120ms ease;
+
+    &:hover {
+      background-color: var(--surface-hover);
+      color: var(--font-color-default);
+    }
+
+    &:disabled {
+      cursor: default;
+      opacity: 0.6;
+
+      &:hover {
+        background-color: transparent;
+        color: var(--text-muted);
+      }
+    }
+
+    &--available {
+      color: var(--warning);
+
+      &:hover {
+        color: var(--warning);
+      }
+    }
+  }
+
+  &__btn {
+    width: 46px;
+    height: 100%;
+    border: none;
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 120ms ease, color 120ms ease;
+
+    &:hover {
+      background-color: var(--surface-hover);
+      color: var(--font-color-default);
+    }
+
+    &--close:hover {
+      background-color: var(--danger);
+      color: white;
+    }
+  }
+}

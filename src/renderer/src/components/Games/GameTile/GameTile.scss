@@ -1,0 +1,69 @@
+.game-tile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 52px;
+  padding: 0 10px;
+  border-radius: var(--radius);
+  border-left: 3px solid transparent;
+  background-color: var(--surface-alt);
+  cursor: pointer;
+  width: 100%;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease;
+
+  &.odd {
+    background-color: color-mix(in srgb, var(--surface-alt), black 10%);
+  }
+
+  &:not(.game-selected):hover {
+    background-color: var(--surface-hover);
+  }
+
+  &.game-selected {
+    background-color: var(--surface-hover);
+    border-left-color: var(--accent-hover);
+  }
+
+  &__icon {
+    width: 34px;
+    height: 34px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    background-color: var(--secondary);
+    background-size: cover;
+    background-position: center;
+  }
+
+  &__title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--font-color-default);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__badge {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: bold;
+    color: white;
+    flex-shrink: 0;
+
+    &--update {
+      background-color: var(--warning);
+    }
+
+    &--missing {
+      background-color: var(--border);
+    }
+  }
+}

@@ -1,22 +1,38 @@
-import { contextBridge } from 'electron'
-import { electronAPI } from '@electron-toolkit/preload'
+import { contextBridge, ipcRenderer } from 'electron'
 
-// Custom APIs for renderer
-const api = {}
-
-// Use `contextBridge` APIs to expose Electron APIs to
-// renderer only if context isolation is enabled, otherwise
-// just add to the DOM global.
-if (process.contextIsolated) {
-  try {
-    contextBridge.exposeInMainWorld('electron', electronAPI)
-    contextBridge.exposeInMainWorld('api', api)
-  } catch (error) {
-    console.error(error)
-  }
-} else {
-  // @ts-ignore (define in dts)
-  window.electron = electronAPI
-  // @ts-ignore (define in dts)
-  window.api = api
+export interface GameConfig {
+  id: string
+  repoOwner: string
+  repoName: string
+  assetPattern?: string
+  executable?: string
 }
+
+contextBridge.exposeInMainWorld('windowAPI', {
+  close: () => ipcRenderer.send('window-close'),
+  minimize: () => ipcRenderer.send('window-minimize')
+})
+
+contextBridge.exposeInMainWorld('launcherAPI', {
+  getVersion: () => ipcRenderer.invoke('launcher:get-version'),
+  checkForUpdate: () => ipcRenderer.invoke('launcher:check-update'),
+  installUpdate: () => ipcRenderer.invoke('launcher:install-update'),
+  onDownloadProgress: (callback: (percent: number) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, percent: number) => callback(percent)
+    ipcRenderer.on('launcher:download-progress', listener)
+    return () => ipcRenderer.removeListener('launcher:download-progress', listener)
+  }
+})
+
+contextBridge.exposeInMainWorld('gameAPI', {
+  getStatus: (id: string) => ipcRenderer.invoke('games:get-status', id),
+  checkForUpdate: (config: GameConfig) => ipcRenderer.invoke('games:check-update', config),
+  download: (config: GameConfig) => ipcRenderer.invoke('games:download', config),
+  play: (id: string) => ipcRenderer.invoke('games:play', id),
+  onDownloadProgress: (callback: (data: { id: string; percent: number }) => void) => {
+    const listener = (_event: Electron.IpcRendererEvent, data: { id: string; percent: number }) =>
+      callback(data)
+    ipcRenderer.on('games:download-progress', listener)
+    return () => ipcRenderer.removeListener('games:download-progress', listener)
+  }
+})

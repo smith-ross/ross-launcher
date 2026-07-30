@@ -1,0 +1,75 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+:root {
+  /* backgrounds */
+  --primary: #2a1414; /* window chrome / deepest bg */
+  --secondary: #3a1f1f; /* panels */
+  --surface-alt: #47272a; /* tiles, thumbnails */
+  --surface-hover: #55302f; /* hover / selected fill */
+
+  /* brand accent (reused across buttons, selection, progress) */
+  --accent: #7d2c2c;
+  --accent-hover: #9b3f3f;
+
+  /* status */
+  --danger: #b23b3b;
+  --warning: #c47a2e;
+
+  /* text */
+  --font-color-default: #b9b9bd;
+  --text-muted: #9c8f8f;
+
+  /* structure */
+  --border: #55302f;
+  --radius-sm: 3px;
+  --radius: 5px;
+  --radius-lg: 8px;
+
+  --font-body:
+    'Segoe UI',
+    Arial,
+    Helvetica,
+    sans-serif;
+}
+
+#root {
+  height: 100%;
+  width: 100%;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  background-color: var(--primary);
+  color: var(--font-color-default);
+  font-family: var(--font-body);
+  overflow: hidden; /* prevents scrollbars on a fixed-size window */
+}
+
+.launcher {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: var(--radius-sm);
+
+  &:hover {
+    background-color: var(--accent-hover);
+  }
+}

@@ -12,7 +12,7 @@ const SelectedGame = () => {
   if (!selectedGame) {
     return (
       <div className="selected-game__inner selected-game__inner--empty">
-        <span>Select a game to get started</span>
+        <span>Select a game</span>
       </div>
     )
   }
@@ -33,14 +33,18 @@ const SelectedGame = () => {
     <div className="selected-game__inner">
       <div
         className="game-banner"
-        style={selectedGame.coverUri ? { backgroundImage: `url(${selectedGame.coverUri})` } : undefined}
+        style={
+          selectedGame.coverUri ? { backgroundImage: `url(${selectedGame.coverUri})` } : undefined
+        }
       />
 
       <div className="game-content">
         <div className="game-header">
           <div
             className="game-icon"
-            style={selectedGame.iconUri ? { backgroundImage: `url(${selectedGame.iconUri})` } : undefined}
+            style={
+              selectedGame.iconUri ? { backgroundImage: `url(${selectedGame.iconUri})` } : undefined
+            }
           />
           <h1 className="game-title">{selectedGame.name}</h1>
         </div>
@@ -50,7 +54,9 @@ const SelectedGame = () => {
             className="play-btn"
             text="Play"
             disabled={!isPlayable}
-            title={status === 'update-available' ? 'Update the game before you can play' : undefined}
+            title={
+              status === 'update-available' ? 'Update the game before you can play' : undefined
+            }
             onClick={() => playGame(selectedGame)}
           />
           {showInstallButton && (

@@ -59,15 +59,21 @@ jobs:
         run: npm run build:win
 
       # Only commit/tag/release once the build has actually succeeded, so a
-      # broken build never leaves a stray version bump on main.
+      # broken build never leaves a stray version bump on main. On the very
+      # first run there's nothing to bump (package.json already matches the
+      # seeded version), so skip committing rather than fail on an empty diff.
       - name: Commit version bump
         shell: bash
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add package.json package-lock.json
-          git commit -m "chore: release ${{ steps.version.outputs.tag }} [skip ci]"
-          git push
+          if git diff --cached --quiet; then
+            echo "package.json already at ${{ steps.version.outputs.version }}; nothing to commit"
+          else
+            git commit -m "chore: release ${{ steps.version.outputs.tag }} [skip ci]"
+            git push
+          fi
 
       - name: Create GitHub release
         shell: bash

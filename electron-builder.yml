@@ -1,4 +1,4 @@
-appId: com.electron.app
+appId: com.ross.launcher
 productName: 'Ross Launcher'
 directories:
   buildResources: build
@@ -12,7 +12,7 @@ files:
 asarUnpack:
   - resources/**
 win:
-  executableName: ross-launcher
+  executableName: 'Ross Launcher'
 nsis:
   artifactName: ${name}-${version}-setup.${ext}
   shortcutName: ${productName}

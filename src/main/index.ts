@@ -10,6 +10,7 @@ function createWindow() {
   win = new BrowserWindow({
     width: 1100,
     height: 700,
+    title: 'Ross Launcher',
     frame: false, // removes native title bar/border
     resizable: false,
     webPreferences: {

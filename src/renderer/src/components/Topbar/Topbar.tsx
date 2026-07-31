@@ -66,7 +66,7 @@ const Topbar = () => {
   return (
     <div className="topbar">
       <div className="topbar__drag">
-        <span className="topbar__title">ross launcher</span>
+        <span className="topbar__title">Ross Launcher</span>
         {version && <span className="topbar__version">v{version}</span>}
       </div>
 

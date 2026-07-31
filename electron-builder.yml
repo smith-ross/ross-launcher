@@ -1,5 +1,5 @@
 appId: com.electron.app
-productName: ross-launcher
+productName: 'Ross Launcher'
 directories:
   buildResources: build
 files:

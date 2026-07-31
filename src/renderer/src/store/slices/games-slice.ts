@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+import gameDefinitions from '@renderer/games.json'
 
 export type GameStatus =
   | 'checking'
@@ -8,12 +9,14 @@ export type GameStatus =
   | 'downloading'
   | 'error'
 
-export interface Game {
+// The static, per-game config read from games.json. Fill in repoOwner/
+// repoName with the real GitHub repo for each game to enable update checks,
+// downloads, and Play.
+export interface GameDefinition {
   id: string
   name: string
   iconUri: string
   coverUri?: string
-  isPlaying?: boolean
   /** GitHub owner/repo hosting this game's releases, e.g. "ross-smith" / "my-game". */
   repoOwner: string
   repoName: string
@@ -21,6 +24,11 @@ export interface Game {
   assetPattern?: string
   /** Relative path (inside the extracted install) to the game's executable, if known. */
   executable?: string
+}
+
+// Adds the runtime-only fields tracked while the app is running.
+export interface Game extends GameDefinition {
+  isPlaying?: boolean
   status: GameStatus
   installedVersion?: string
   latestVersion?: string
@@ -34,12 +42,7 @@ export interface GamesState {
 }
 
 const initialState: GamesState = {
-  list: [
-    // Fill in repoOwner/repoName with the real GitHub repo for each game to
-    // enable update checks, downloads, and Play.
-    { id: 'game-1', name: "Ross's Game", iconUri: '', repoOwner: '', repoName: '', status: 'checking' },
-    { id: 'game-2', name: "Ross's Game 2", iconUri: '', repoOwner: '', repoName: '', status: 'checking' }
-  ],
+  list: (gameDefinitions as GameDefinition[]).map((game) => ({ ...game, status: 'checking' })),
   selectedId: null
 }
 

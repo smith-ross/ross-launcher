@@ -5,6 +5,7 @@ import SelectedGame from './SelectedGame/SelectedGame'
 import { useEffect } from 'react'
 import { updateGame } from '@renderer/store/slices/games-slice'
 import useGameLibrary from '@renderer/util/useGameLibrary'
+import Settings from '@renderer/components/Settings/Settings'
 
 const Games = () => {
   const dispatch = useAppDispatch()
@@ -35,6 +36,7 @@ const Games = () => {
             <GameTile key={game.id} isEven={i % 2 === 0} schema={game} />
           ))}
         </div>
+        <Settings />
       </div>
       <div className="selected-game">
         <SelectedGame />

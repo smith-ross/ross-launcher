@@ -2,6 +2,7 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import { checkForUpdate, downloadGame, playGame, getStatus, GameConfig } from './lib/gameManager'
 import { checkForLauncherUpdate, downloadAndInstallLauncherUpdate } from './lib/selfUpdater'
+import { getInstallDir, chooseInstallDir } from './lib/settings'
 
 let win: BrowserWindow
 
@@ -67,3 +68,7 @@ ipcMain.handle('launcher:install-update', async (event) => {
     event.sender.send('launcher:download-progress', percent)
   })
 })
+
+// Settings handlers — see src/main/lib/settings.ts
+ipcMain.handle('settings:get-install-dir', () => getInstallDir())
+ipcMain.handle('settings:choose-install-dir', () => chooseInstallDir(win))

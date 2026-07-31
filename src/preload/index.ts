@@ -24,6 +24,11 @@ contextBridge.exposeInMainWorld('launcherAPI', {
   }
 })
 
+contextBridge.exposeInMainWorld('settingsAPI', {
+  getInstallDir: () => ipcRenderer.invoke('settings:get-install-dir'),
+  chooseInstallDir: () => ipcRenderer.invoke('settings:choose-install-dir')
+})
+
 contextBridge.exposeInMainWorld('gameAPI', {
   getStatus: (id: string) => ipcRenderer.invoke('games:get-status', id),
   checkForUpdate: (config: GameConfig) => ipcRenderer.invoke('games:check-update', config),

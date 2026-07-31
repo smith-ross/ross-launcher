@@ -1,10 +1,10 @@
-import { app } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { spawn } from 'child_process'
 import AdmZip from 'adm-zip'
 import { fetchLatestRelease, pickAsset, downloadAsset, compareVersions } from './github'
 import { getManifestEntry, writeManifestEntry } from './manifest'
+import { getInstallDir } from './settings'
 
 export interface GameConfig {
   id: string
@@ -39,7 +39,7 @@ export interface PlayResult {
 }
 
 function gamesDir(): string {
-  return path.join(app.getPath('userData'), 'games')
+  return getInstallDir()
 }
 
 function installDirFor(id: string): string {

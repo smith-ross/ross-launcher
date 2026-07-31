@@ -52,6 +52,11 @@ interface LauncherInstallResult {
   error?: string
 }
 
+interface ChooseInstallDirResult {
+  installDir?: string
+  error?: string
+}
+
 declare global {
   interface Window {
     windowAPI: {
@@ -63,6 +68,10 @@ declare global {
       checkForUpdate: () => Promise<LauncherCheckUpdateResult>
       installUpdate: () => Promise<LauncherInstallResult>
       onDownloadProgress: (callback: (percent: number) => void) => () => void
+    }
+    settingsAPI: {
+      getInstallDir: () => Promise<string>
+      chooseInstallDir: () => Promise<ChooseInstallDirResult>
     }
     gameAPI: {
       getStatus: (id: string) => Promise<GameStatusResult>

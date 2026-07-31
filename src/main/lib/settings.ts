@@ -1,10 +1,23 @@
 import { app, dialog, BrowserWindow } from 'electron'
 import fs from 'fs'
 import path from 'path'
+import { CHRISTMAS_THEME_ENABLED } from './featureFlags'
+
+export type ThemePreference =
+  | 'burgundy'
+  | 'dark'
+  | 'light'
+  | 'midnight'
+  | 'forest'
+  | 'sunset'
+  | 'cyberpunk'
+  | 'bubblegum'
+  | 'christmas'
 
 interface StoredSettings {
   installDir?: string
   gameOrder?: string[]
+  theme?: ThemePreference
 }
 
 function settingsPath(): string {
@@ -72,4 +85,23 @@ export function getGameOrder(): string[] {
 
 export function setGameOrder(order: string[]): void {
   writeSettings({ ...readSettings(), gameOrder: order })
+}
+
+// Enforced here, at the read, rather than only where the theme gets set —
+// so the invariant holds no matter how a persisted "christmas" ended up on
+// disk (e.g. a build from a season where it was enabled).
+export function getTheme(): ThemePreference {
+  const theme = readSettings().theme ?? 'burgundy'
+  if (theme === 'christmas' && !CHRISTMAS_THEME_ENABLED) {
+    return 'burgundy'
+  }
+  return theme
+}
+
+export function setTheme(theme: ThemePreference): void {
+  writeSettings({ ...readSettings(), theme })
+}
+
+export function getChristmasAvailable(): boolean {
+  return CHRISTMAS_THEME_ENABLED
 }

@@ -4,6 +4,10 @@
   box-sizing: border-box;
 }
 
+/* Burgundy — the launcher's signature look, and the default theme. Applied
+   as plain :root so it's what renders before useApplyTheme.ts (in
+   src/renderer/src/util) has even run, and it's what "dark"/"light" below
+   override from. */
 :root {
   /* backgrounds */
   --primary: #2a1414; /* window chrome / deepest bg */
@@ -14,6 +18,10 @@
   /* brand accent (reused across buttons, selection, progress) */
   --accent: #7d2c2c;
   --accent-hover: #9b3f3f;
+  /* text/icon color for content placed on top of accent-colored surfaces
+     (buttons, etc.) — stays light across every theme since the accent
+     itself stays a similarly saturated red in all of them */
+  --on-accent: #f5efee;
 
   /* status */
   --danger: #b23b3b;
@@ -34,6 +42,174 @@
     Arial,
     Helvetica,
     sans-serif;
+}
+
+/* Dark — a neutral gray/black dark theme, as opposed to Burgundy's red-
+   tinted one. Keeps the same brand-red accent for consistency. */
+:root[data-theme='dark'] {
+  --primary: #16161a;
+  --secondary: #1f1f24;
+  --surface-alt: #28282f;
+  --surface-hover: #33333c;
+
+  --accent: #b0403f;
+  --accent-hover: #c85352;
+
+  --danger: #d9534f;
+  --warning: #d68a3c;
+
+  --font-color-default: #d8d8dc;
+  --text-muted: #8f8f97;
+
+  --border: #34343c;
+}
+
+/* Christmas — pine green, cranberry, and gold for a cozy, festive look.
+   Gated behind a separate "enable Christmas theme" setting (see
+   Settings.tsx); disabling it forces the active theme back to Burgundy. */
+:root[data-theme='christmas'] {
+  --primary: #0f2818;
+  --secondary: #163823;
+  --surface-alt: #1e4530;
+  --surface-hover: #2a5940;
+
+  --accent: #b3222c;
+  --accent-hover: #d13540;
+
+  --danger: #d13540;
+  --warning: #d6a13c;
+
+  --font-color-default: #f3ead9;
+  --text-muted: #a8c2ae;
+
+  --border: #2a5940;
+
+  --on-accent: #fff8ee;
+}
+
+/* Midnight — deep blue-black with an electric blue accent. */
+:root[data-theme='midnight'] {
+  --primary: #0b1220;
+  --secondary: #131c2e;
+  --surface-alt: #1c2740;
+  --surface-hover: #263352;
+
+  --accent: #3b6fd6;
+  --accent-hover: #5488ee;
+
+  --danger: #e0524f;
+  --warning: #d6a13c;
+
+  --font-color-default: #dbe4f5;
+  --text-muted: #8592ab;
+
+  --border: #263352;
+
+  --on-accent: #f3f7ff;
+}
+
+/* Forest — deep green with a moss/emerald accent. */
+:root[data-theme='forest'] {
+  --primary: #10201a;
+  --secondary: #172d24;
+  --surface-alt: #1f3b2f;
+  --surface-hover: #294d3d;
+
+  --accent: #3f9463;
+  --accent-hover: #4fae77;
+
+  --danger: #d1524a;
+  --warning: #d6a13c;
+
+  --font-color-default: #dcece2;
+  --text-muted: #86a596;
+
+  --border: #294d3d;
+
+  --on-accent: #f2fbf6;
+}
+
+/* Sunset — vivid, saturated amber/tangerine (brighter than a plain brown
+   dark theme — the point is to actually feel like a sunset). */
+:root[data-theme='sunset'] {
+  --primary: #2e1408;
+  --secondary: #431d0c;
+  --surface-alt: #5c2810;
+  --surface-hover: #7a3414;
+
+  --accent: #ff6a1a;
+  --accent-hover: #ff8642;
+
+  --danger: #f0453a;
+  --warning: #ffbc3d;
+
+  --font-color-default: #ffe8d2;
+  --text-muted: #d9a878;
+
+  --border: #7a3414;
+
+  --on-accent: #fff6ec;
+}
+
+/* Cyberpunk — near-black with a neon pink/magenta accent. */
+:root[data-theme='cyberpunk'] {
+  --primary: #0a0a12;
+  --secondary: #12121e;
+  --surface-alt: #1b1b2d;
+  --surface-hover: #262640;
+
+  --accent: #ff2f92;
+  --accent-hover: #ff5aa8;
+
+  --danger: #ff3b3b;
+  --warning: #f5c542;
+
+  --font-color-default: #e8e8ff;
+  --text-muted: #8f8fb8;
+
+  --border: #262640;
+
+  --on-accent: #fff0f8;
+}
+
+/* Light theme overrides. */
+:root[data-theme='light'] {
+  --primary: #f4ece9;
+  --secondary: #ffffff;
+  --surface-alt: #f0e2de;
+  --surface-hover: #e6d0c9;
+
+  --accent: #a13636;
+  --accent-hover: #b84444;
+
+  --danger: #b3261e;
+  --warning: #a15b1a;
+
+  --font-color-default: #34201d;
+  --text-muted: #8a736d;
+
+  --border: #ddc7c0;
+}
+
+/* Bubblegum — bright, cheerful light pink. */
+:root[data-theme='bubblegum'] {
+  --primary: #ffe1f0;
+  --secondary: #fff5fa;
+  --surface-alt: #ffd0e8;
+  --surface-hover: #ffb8dc;
+
+  --accent: #ff3d9a;
+  --accent-hover: #ff5aad;
+
+  --danger: #e0453f;
+  --warning: #d99a2a;
+
+  --font-color-default: #4a1030;
+  --text-muted: #9c6a85;
+
+  --border: #ffb8dc;
+
+  --on-accent: #fff5fa;
 }
 
 #root {

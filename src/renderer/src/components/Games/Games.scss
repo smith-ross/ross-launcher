@@ -34,6 +34,22 @@
     text-transform: uppercase;
   }
 
+  &__search {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: var(--primary);
+    color: var(--font-color-default);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 13px;
+    margin-bottom: 10px;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+
   &__list {
     flex: 1;
     display: flex;
@@ -43,6 +59,12 @@
     min-height: 0;
     padding-right: 4px;
   }
+
+  &__empty {
+    font-size: 12px;
+    color: var(--text-muted);
+    padding: 8px 2px;
+  }
 }
 
 .selected-game {
@@ -51,4 +73,25 @@
   background-color: var(--secondary);
   border-radius: var(--radius-lg);
   overflow: hidden;
+}
+
+// A thin "snow settled on the edge" accent for the Christmas theme.
+:root[data-theme='christmas'] {
+  .games-select,
+  .selected-game {
+    position: relative;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+      background: linear-gradient(90deg, transparent, #ffffff, transparent);
+      opacity: 0.55;
+      pointer-events: none;
+    }
+  }
 }

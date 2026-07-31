@@ -47,7 +47,7 @@
     box-sizing: border-box;
     align-self: flex-start;
     background-color: var(--accent);
-    color: var(--font-color-default);
+    color: var(--on-accent);
     font-size: 13px;
     font-weight: 700;
     padding: 8px 14px;
@@ -60,15 +60,47 @@
   }
 }
 
+.settings-theme {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+
+  &__option {
+    all: unset;
+    box-sizing: border-box;
+    flex: 0 1 auto;
+    min-width: 72px;
+    text-align: center;
+    background-color: var(--primary);
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+
+    &:hover {
+      color: var(--font-color-default);
+    }
+
+    &--active {
+      background-color: var(--accent);
+      color: var(--on-accent);
+
+      &:hover {
+        color: var(--on-accent);
+      }
+    }
+  }
+}
+
 .settings-hint {
-  margin-top: 14px;
   font-size: 12px;
   color: var(--text-muted);
 }
 
 .settings-error {
   display: block;
-  margin-top: 10px;
   font-size: 12px;
   color: var(--danger);
 }

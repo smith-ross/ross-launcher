@@ -95,6 +95,17 @@ interface PruneOrphanedResult {
   removed: string[]
 }
 
+type ThemePreference =
+  | 'burgundy'
+  | 'dark'
+  | 'light'
+  | 'midnight'
+  | 'forest'
+  | 'sunset'
+  | 'cyberpunk'
+  | 'bubblegum'
+  | 'christmas'
+
 declare global {
   interface Window {
     windowAPI: {
@@ -112,6 +123,9 @@ declare global {
       chooseInstallDir: () => Promise<ChooseInstallDirResult>
       getGameOrder: () => Promise<string[]>
       setGameOrder: (order: string[]) => Promise<void>
+      getTheme: () => Promise<ThemePreference>
+      setTheme: (theme: ThemePreference) => Promise<void>
+      getChristmasAvailable: () => Promise<boolean>
     }
     customGamesAPI: {
       list: () => Promise<CustomGameDefinition[]>

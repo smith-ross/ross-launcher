@@ -1,0 +1,27 @@
+.snowfall {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 50;
+
+  &__flake {
+    position: absolute;
+    top: 0;
+    border-radius: 50%;
+    background: #ffffff;
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.8);
+    animation-name: snowfall-fall;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+  }
+}
+
+@keyframes snowfall-fall {
+  from {
+    transform: translate(0, -10px);
+  }
+  to {
+    transform: translate(var(--drift), 720px);
+  }
+}

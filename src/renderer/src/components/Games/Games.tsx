@@ -2,7 +2,7 @@ import './Games.scss'
 import GameTile from './GameTile/GameTile'
 import { useAppDispatch, useAppSelector } from '@renderer/store/hooks'
 import SelectedGame from './SelectedGame/SelectedGame'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 import { addGames, Game, reorderGames, updateGame } from '@renderer/store/slices/games-slice'
 import useGameLibrary from '@renderer/util/useGameLibrary'
 import Settings from '@renderer/components/Settings/Settings'
@@ -17,6 +17,7 @@ const Games = () => {
   const [draggedId, setDraggedId] = useState<string | null>(null)
   const [dragOverId, setDragOverId] = useState<string | null>(null)
   const [isOrderReady, setIsOrderReady] = useState(false)
+  const [search, setSearch] = useState('')
 
   useEffect(() => {
     gamesList.forEach((game) => checkGame(game))
@@ -80,6 +81,12 @@ const Games = () => {
     [draggedId, gamesList, dispatch, clearDrag]
   )
 
+  const filteredGames = useMemo(() => {
+    const query = search.trim().toLowerCase()
+    if (!query) return gamesList
+    return gamesList.filter((game) => game.name.toLowerCase().includes(query))
+  }, [gamesList, search])
+
   return (
     <div className="games">
       <div className="games-select">
@@ -87,8 +94,18 @@ const Games = () => {
           <span className="games-select__title">lebron games</span>
           <AddGame />
         </div>
+        <input
+          className="games-select__search"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Search games…"
+          type="text"
+        />
         <div className="games-select__list">
-          {gamesList.map((game, i) => (
+          {search.trim() && filteredGames.length === 0 && (
+            <span className="games-select__empty">No games match "{search.trim()}"</span>
+          )}
+          {filteredGames.map((game, i) => (
             <GameTile
               key={game.id}
               isEven={i % 2 === 0}

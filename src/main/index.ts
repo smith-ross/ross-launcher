@@ -9,7 +9,16 @@ import {
   GameConfig
 } from './lib/gameManager'
 import { checkForLauncherUpdate, downloadAndInstallLauncherUpdate } from './lib/selfUpdater'
-import { getInstallDir, chooseInstallDir, getGameOrder, setGameOrder } from './lib/settings'
+import {
+  getInstallDir,
+  chooseInstallDir,
+  getGameOrder,
+  setGameOrder,
+  getTheme,
+  setTheme,
+  getChristmasAvailable,
+  ThemePreference
+} from './lib/settings'
 import {
   listCustomGames,
   pickExecutable,
@@ -87,6 +96,9 @@ ipcMain.handle('settings:get-install-dir', () => getInstallDir())
 ipcMain.handle('settings:choose-install-dir', () => chooseInstallDir(win))
 ipcMain.handle('settings:get-game-order', () => getGameOrder())
 ipcMain.handle('settings:set-game-order', (_event, order: string[]) => setGameOrder(order))
+ipcMain.handle('settings:get-theme', () => getTheme())
+ipcMain.handle('settings:set-theme', (_event, theme: ThemePreference) => setTheme(theme))
+ipcMain.handle('settings:get-christmas-available', () => getChristmasAvailable())
 
 ipcMain.handle('custom-games:list', () => listCustomGames())
 ipcMain.handle('custom-games:pick-executable', () => pickExecutable(win))

@@ -24,11 +24,25 @@ contextBridge.exposeInMainWorld('launcherAPI', {
   }
 })
 
+export type ThemePreference =
+  | 'burgundy'
+  | 'dark'
+  | 'light'
+  | 'midnight'
+  | 'forest'
+  | 'sunset'
+  | 'cyberpunk'
+  | 'bubblegum'
+  | 'christmas'
+
 contextBridge.exposeInMainWorld('settingsAPI', {
   getInstallDir: () => ipcRenderer.invoke('settings:get-install-dir'),
   chooseInstallDir: () => ipcRenderer.invoke('settings:choose-install-dir'),
   getGameOrder: () => ipcRenderer.invoke('settings:get-game-order'),
-  setGameOrder: (order: string[]) => ipcRenderer.invoke('settings:set-game-order', order)
+  setGameOrder: (order: string[]) => ipcRenderer.invoke('settings:set-game-order', order),
+  getTheme: () => ipcRenderer.invoke('settings:get-theme'),
+  setTheme: (theme: ThemePreference) => ipcRenderer.invoke('settings:set-theme', theme),
+  getChristmasAvailable: () => ipcRenderer.invoke('settings:get-christmas-available')
 })
 
 export interface AddCustomGameInput {

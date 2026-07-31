@@ -1,0 +1,33 @@
+import { createSlice, PayloadAction } from '@reduxjs/toolkit'
+
+export type ThemePreference =
+  | 'burgundy'
+  | 'dark'
+  | 'light'
+  | 'midnight'
+  | 'forest'
+  | 'sunset'
+  | 'cyberpunk'
+  | 'bubblegum'
+  | 'christmas'
+
+export interface ThemeState {
+  preference: ThemePreference
+}
+
+const initialState: ThemeState = {
+  preference: 'burgundy'
+}
+
+const themeSlice = createSlice({
+  name: 'theme',
+  initialState,
+  reducers: {
+    setThemePreference: (state, action: PayloadAction<ThemePreference>) => {
+      state.preference = action.payload
+    }
+  }
+})
+
+export const { setThemePreference } = themeSlice.actions
+export default themeSlice.reducer

@@ -1,10 +1,12 @@
 import './Topbar.scss'
 import { useCallback, useEffect, useState } from 'react'
+import { useAppSelector } from '@renderer/store/hooks'
 
 type UpdateStatus =
   'idle' | 'checking' | 'up-to-date' | 'update-available' | 'downloading' | 'error'
 
 const Topbar = () => {
+  const isChristmas = useAppSelector((state) => state.theme.preference === 'christmas')
   const [version, setVersion] = useState('')
   const [status, setStatus] = useState<UpdateStatus>('idle')
   const [latestVersion, setLatestVersion] = useState('')
@@ -66,7 +68,7 @@ const Topbar = () => {
   return (
     <div className="topbar">
       <div className="topbar__drag">
-        <span className="topbar__title">Ross Launcher</span>
+        <span className="topbar__title">{isChristmas ? '🎄 Ross Launcher' : 'Ross Launcher'}</span>
         {version && <span className="topbar__version">v{version}</span>}
       </div>
 

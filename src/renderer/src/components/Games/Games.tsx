@@ -7,6 +7,7 @@ import { addGames, Game, reorderGames, updateGame } from '@renderer/store/slices
 import useGameLibrary from '@renderer/util/useGameLibrary'
 import Settings from '@renderer/components/Settings/Settings'
 import AddGame from './AddGame/AddGame'
+import presetDefinitions from '@renderer/games.json'
 
 const Games = () => {
   const dispatch = useAppDispatch()
@@ -34,6 +35,12 @@ const Games = () => {
           dispatch(reorderGames(order))
         }
         setIsOrderReady(true)
+
+        const validIds = [
+          ...(presetDefinitions as { id: string }[]).map((g) => g.id),
+          ...customGames.map((g) => g.id)
+        ]
+        window.gameAPI.pruneOrphaned(validIds)
       }
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps

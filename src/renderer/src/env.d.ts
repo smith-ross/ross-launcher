@@ -91,6 +91,10 @@ interface RemoveCustomGameResult {
   success: boolean
 }
 
+interface PruneOrphanedResult {
+  removed: string[]
+}
+
 declare global {
   interface Window {
     windowAPI: {
@@ -121,6 +125,7 @@ declare global {
       checkForUpdate: (config: GameConfig) => Promise<GameCheckUpdateResult>
       download: (config: GameConfig) => Promise<GameDownloadResult>
       play: (id: string) => Promise<GamePlayResult>
+      pruneOrphaned: (validIds: string[]) => Promise<PruneOrphanedResult>
       onDownloadProgress: (callback: (data: { id: string; percent: number }) => void) => () => void
     }
   }

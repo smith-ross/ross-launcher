@@ -51,6 +51,7 @@ contextBridge.exposeInMainWorld('gameAPI', {
   checkForUpdate: (config: GameConfig) => ipcRenderer.invoke('games:check-update', config),
   download: (config: GameConfig) => ipcRenderer.invoke('games:download', config),
   play: (id: string) => ipcRenderer.invoke('games:play', id),
+  pruneOrphaned: (validIds: string[]) => ipcRenderer.invoke('games:prune-orphaned', validIds),
   onDownloadProgress: (callback: (data: { id: string; percent: number }) => void) => {
     const listener = (_event: Electron.IpcRendererEvent, data: { id: string; percent: number }) =>
       callback(data)

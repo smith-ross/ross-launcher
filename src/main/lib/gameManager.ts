@@ -4,7 +4,7 @@ import path from 'path'
 import { spawn } from 'child_process'
 import AdmZip from 'adm-zip'
 import { fetchLatestRelease, pickAsset, downloadAsset, compareVersions } from './github'
-import { getManifestEntry, writeManifestEntry } from './manifest'
+import { getManifestEntry, writeManifestEntry, removeManifestEntry, readManifest } from './manifest'
 import { getInstallDir } from './settings'
 
 export interface GameConfig {
@@ -149,6 +149,30 @@ export async function downloadGame(
   } catch (err) {
     return { success: false, error: err instanceof Error ? err.message : String(err) }
   }
+}
+
+export interface PruneResult {
+  removed: string[]
+}
+
+export function pruneOrphanedInstalls(validIds: string[]): PruneResult {
+  const manifest = readManifest()
+  const validSet = new Set(validIds)
+  const removed: string[] = []
+
+  for (const id of Object.keys(manifest)) {
+    if (validSet.has(id)) continue
+
+    try {
+      fs.rmSync(installDirFor(id), { recursive: true, force: true })
+    } catch {
+      // best-effort, still drop the manifest entry even if the folder is already gone or locked
+    }
+    removeManifestEntry(id)
+    removed.push(id)
+  }
+
+  return { removed }
 }
 
 const SHELL_OPEN_EXTENSIONS = new Set(['.url', '.lnk'])

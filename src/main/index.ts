@@ -1,6 +1,13 @@
 import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
-import { checkForUpdate, downloadGame, playGame, getStatus, GameConfig } from './lib/gameManager'
+import {
+  checkForUpdate,
+  downloadGame,
+  playGame,
+  getStatus,
+  pruneOrphanedInstalls,
+  GameConfig
+} from './lib/gameManager'
 import { checkForLauncherUpdate, downloadAndInstallLauncherUpdate } from './lib/selfUpdater'
 import { getInstallDir, chooseInstallDir, getGameOrder, setGameOrder } from './lib/settings'
 import {
@@ -58,6 +65,7 @@ ipcMain.handle('games:download', async (event, config: GameConfig) => {
 })
 
 ipcMain.handle('games:play', (_event, id: string) => playGame(id))
+ipcMain.handle('games:prune-orphaned', (_event, validIds: string[]) => pruneOrphanedInstalls(validIds))
 
 ipcMain.handle('launcher:get-version', () => app.getVersion())
 

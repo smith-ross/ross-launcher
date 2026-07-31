@@ -1,16 +1,10 @@
 [
   {
     "id": "game-1",
-    "name": "Ross's Game",
-    "iconUri": "",
-    "repoOwner": "",
-    "repoName": ""
-  },
-  {
-    "id": "game-2",
-    "name": "Ross's Game 2",
-    "iconUri": "",
-    "repoOwner": "",
-    "repoName": ""
+    "name": "Demo Game",
+    "iconUri": "/godot.png",
+    "coverUri": "/godot-banner.png",
+    "repoOwner": "smith-ross",
+    "repoName": "godot-demo-game"
   }
 ]

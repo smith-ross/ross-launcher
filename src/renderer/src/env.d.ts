@@ -87,6 +87,19 @@ interface AddCustomGameResult {
   error?: string
 }
 
+interface UpdateCustomGameInput {
+  name: string
+  executablePath: string
+  iconUri: string
+  coverUri?: string
+}
+
+interface UpdateCustomGameResult {
+  success: boolean
+  game?: CustomGameDefinition
+  error?: string
+}
+
 interface RemoveCustomGameResult {
   success: boolean
 }
@@ -129,9 +142,11 @@ declare global {
     }
     customGamesAPI: {
       list: () => Promise<CustomGameDefinition[]>
+      getExecutablePath: (id: string) => Promise<string | undefined>
       pickExecutable: () => Promise<PickFileResult>
       pickImage: () => Promise<PickImageResult>
       add: (input: AddCustomGameInput) => Promise<AddCustomGameResult>
+      update: (id: string, input: UpdateCustomGameInput) => Promise<UpdateCustomGameResult>
       remove: (id: string) => Promise<RemoveCustomGameResult>
     }
     gameAPI: {

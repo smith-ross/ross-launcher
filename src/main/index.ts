@@ -21,11 +21,14 @@ import {
 } from './lib/settings'
 import {
   listCustomGames,
+  getCustomGameExecutablePath,
   pickExecutable,
   pickImage,
   addCustomGame,
+  updateCustomGame,
   removeCustomGame,
-  AddCustomGameInput
+  AddCustomGameInput,
+  UpdateCustomGameInput
 } from './lib/customGames'
 
 let win: BrowserWindow
@@ -101,7 +104,13 @@ ipcMain.handle('settings:set-theme', (_event, theme: ThemePreference) => setThem
 ipcMain.handle('settings:get-christmas-available', () => getChristmasAvailable())
 
 ipcMain.handle('custom-games:list', () => listCustomGames())
+ipcMain.handle('custom-games:get-executable-path', (_event, id: string) =>
+  getCustomGameExecutablePath(id)
+)
 ipcMain.handle('custom-games:pick-executable', () => pickExecutable(win))
 ipcMain.handle('custom-games:pick-image', () => pickImage(win))
 ipcMain.handle('custom-games:add', (_event, input: AddCustomGameInput) => addCustomGame(input))
+ipcMain.handle('custom-games:update', (_event, id: string, input: UpdateCustomGameInput) =>
+  updateCustomGame(id, input)
+)
 ipcMain.handle('custom-games:remove', (_event, id: string) => removeCustomGame(id))

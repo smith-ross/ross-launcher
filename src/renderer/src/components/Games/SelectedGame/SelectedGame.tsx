@@ -4,6 +4,7 @@ import './SelectedGame.scss'
 import Button from '@renderer/components/Button/Button'
 import useGameLibrary from '@renderer/util/useGameLibrary'
 import { removeGame } from '@renderer/store/slices/games-slice'
+import EditGame from './EditGame'
 
 const SelectedGame = () => {
   const dispatch = useAppDispatch()
@@ -123,13 +124,16 @@ const SelectedGame = () => {
                 </button>
               </>
             ) : (
-              <button
-                className="game-remove__trigger"
-                onClick={() => setConfirmingRemoveId(selectedGame.id)}
-                type="button"
-              >
-                Remove from library
-              </button>
+              <>
+                <EditGame game={selectedGame} />
+                <button
+                  className="game-remove__trigger"
+                  onClick={() => setConfirmingRemoveId(selectedGame.id)}
+                  type="button"
+                >
+                  Remove from library
+                </button>
+              </>
             )}
           </div>
         )}

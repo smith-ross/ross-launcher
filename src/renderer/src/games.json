@@ -2,8 +2,8 @@
   {
     "id": "game-1",
     "name": "Demo Game",
-    "iconUri": "/godot.png",
-    "coverUri": "/godot-banner.png",
+    "iconUri": "./godot.png",
+    "coverUri": "./godot-banner.png",
     "repoOwner": "smith-ross",
     "repoName": "godot-demo-game"
   }

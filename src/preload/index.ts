@@ -52,11 +52,22 @@ export interface AddCustomGameInput {
   coverUri?: string
 }
 
+export interface UpdateCustomGameInput {
+  name: string
+  executablePath: string
+  iconUri: string
+  coverUri?: string
+}
+
 contextBridge.exposeInMainWorld('customGamesAPI', {
   list: () => ipcRenderer.invoke('custom-games:list'),
+  getExecutablePath: (id: string) =>
+    ipcRenderer.invoke('custom-games:get-executable-path', id) as Promise<string | undefined>,
   pickExecutable: () => ipcRenderer.invoke('custom-games:pick-executable'),
   pickImage: () => ipcRenderer.invoke('custom-games:pick-image'),
   add: (input: AddCustomGameInput) => ipcRenderer.invoke('custom-games:add', input),
+  update: (id: string, input: UpdateCustomGameInput) =>
+    ipcRenderer.invoke('custom-games:update', id, input),
   remove: (id: string) => ipcRenderer.invoke('custom-games:remove', id)
 })
 

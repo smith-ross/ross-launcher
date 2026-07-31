@@ -2,7 +2,7 @@ import { app, dialog, BrowserWindow } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import crypto from 'crypto'
-import { writeManifestEntry, removeManifestEntry } from './manifest'
+import { getManifestEntry, writeManifestEntry, removeManifestEntry } from './manifest'
 
 export interface CustomGameDefinition {
   id: string
@@ -32,6 +32,10 @@ function writeStore(games: CustomGameDefinition[]): void {
 
 export function listCustomGames(): CustomGameDefinition[] {
   return readStore()
+}
+
+export function getCustomGameExecutablePath(id: string): string | undefined {
+  return getManifestEntry(id)?.executablePath
 }
 
 export interface PickFileResult {
@@ -137,6 +141,44 @@ export function addCustomGame(input: AddCustomGameInput): AddCustomGameResult {
   writeStore(store)
 
   return { success: true, game }
+}
+
+export interface UpdateCustomGameInput {
+  name: string
+  executablePath: string
+  iconUri: string
+  coverUri?: string
+}
+
+export interface UpdateCustomGameResult {
+  success: boolean
+  game?: CustomGameDefinition
+  error?: string
+}
+
+export function updateCustomGame(id: string, input: UpdateCustomGameInput): UpdateCustomGameResult {
+  const name = input.name.trim()
+  if (!name) return { success: false, error: 'Name is required' }
+  if (!input.executablePath || !fs.existsSync(input.executablePath)) {
+    return { success: false, error: 'Choose a valid executable or shortcut' }
+  }
+
+  const store = readStore()
+  const existing = store.find((game) => game.id === id)
+  if (!existing) return { success: false, error: 'Game not found' }
+
+  writeManifestEntry(id, {
+    version: 'local',
+    executablePath: input.executablePath,
+    assetName: path.basename(input.executablePath)
+  })
+
+  existing.name = name
+  existing.iconUri = input.iconUri
+  existing.coverUri = input.coverUri
+  writeStore(store)
+
+  return { success: true, game: existing }
 }
 
 export interface RemoveCustomGameResult {

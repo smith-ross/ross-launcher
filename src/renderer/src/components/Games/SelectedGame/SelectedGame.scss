@@ -30,7 +30,7 @@
 
 .game-header {
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 16px;
   margin-top: -32px;
   margin-bottom: 20px;
@@ -97,4 +97,60 @@
 .game-error {
   font-size: 13px;
   color: var(--danger);
+}
+
+.game-remove {
+  margin-top: auto;
+  padding-top: 14px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  &__trigger {
+    all: unset;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-muted);
+
+    &:hover {
+      color: var(--danger);
+    }
+  }
+
+  &__prompt {
+    font-size: 12px;
+    color: var(--text-muted);
+  }
+
+  &__confirm {
+    all: unset;
+    box-sizing: border-box;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+    background-color: var(--danger);
+    padding: 6px 12px;
+    border-radius: var(--radius-sm);
+
+    &:hover {
+      opacity: 0.9;
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__cancel {
+    all: unset;
+    cursor: pointer;
+    font-size: 12px;
+    color: var(--text-muted);
+
+    &:hover {
+      color: var(--font-color-default);
+    }
+  }
 }

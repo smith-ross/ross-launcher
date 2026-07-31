@@ -2,11 +2,9 @@ import { app, dialog, BrowserWindow } from 'electron'
 import fs from 'fs'
 import path from 'path'
 
-// Lives in userData, which survives launcher self-updates (the installer
-// only replaces the app's program files, never the per-user data dir), so a
-// chosen install location isn't reset by the "Check for updates" flow.
 interface StoredSettings {
   installDir?: string
+  gameOrder?: string[]
 }
 
 function settingsPath(): string {
@@ -66,4 +64,12 @@ export async function chooseInstallDir(win: BrowserWindow): Promise<ChooseInstal
 
   writeSettings({ ...readSettings(), installDir: chosen })
   return { installDir: chosen }
+}
+
+export function getGameOrder(): string[] {
+  return readSettings().gameOrder ?? []
+}
+
+export function setGameOrder(order: string[]): void {
+  writeSettings({ ...readSettings(), gameOrder: order })
 }

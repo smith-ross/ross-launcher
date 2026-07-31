@@ -1,14 +1,29 @@
 import { Game, selectGame } from '@renderer/store/slices/games-slice'
 import './GameTile.scss'
 import { useAppDispatch, useAppSelector } from '@renderer/store/hooks'
-import { useCallback } from 'react'
+import { useCallback, DragEvent } from 'react'
 
 interface GameTileProps {
   schema: Game
   isEven?: boolean
+  isDragging?: boolean
+  isDragOver?: boolean
+  onDragStart?: () => void
+  onDragEnter?: () => void
+  onDragEnd?: () => void
+  onDrop?: () => void
 }
 
-const GameTile = ({ schema, isEven = false }: GameTileProps) => {
+const GameTile = ({
+  schema,
+  isEven = false,
+  isDragging = false,
+  isDragOver = false,
+  onDragStart,
+  onDragEnter,
+  onDragEnd,
+  onDrop
+}: GameTileProps) => {
   const dispatch = useAppDispatch()
   const selectedId = useAppSelector((state) => state.games.selectedId)
   const isSelected = selectedId === schema.id
@@ -17,10 +32,38 @@ const GameTile = ({ schema, isEven = false }: GameTileProps) => {
     dispatch(selectGame(schema.id))
   }, [dispatch, schema])
 
+  const handleDragOver = useCallback((e: DragEvent) => {
+    e.preventDefault()
+  }, [])
+
+  const handleDrop = useCallback(
+    (e: DragEvent) => {
+      e.preventDefault()
+      onDrop?.()
+    },
+    [onDrop]
+  )
+
+  const classes = [
+    'game-tile',
+    isEven ? 'even' : 'odd',
+    isSelected ? 'game-selected' : '',
+    isDragging ? 'dragging' : '',
+    isDragOver ? 'drag-over' : ''
+  ]
+    .filter(Boolean)
+    .join(' ')
+
   return (
     <div
-      className={`game-tile ${isEven ? 'even' : 'odd'} ${isSelected ? 'game-selected' : ''}`}
+      className={classes}
       onClick={onClick}
+      draggable
+      onDragStart={onDragStart}
+      onDragEnter={onDragEnter}
+      onDragOver={handleDragOver}
+      onDrop={handleDrop}
+      onDragEnd={onDragEnd}
     >
       <div
         className="game-tile__icon"

@@ -11,7 +11,8 @@
   width: 100%;
   transition:
     background-color 120ms ease,
-    border-color 120ms ease;
+    border-color 120ms ease,
+    opacity 120ms ease;
 
   &.odd {
     background-color: color-mix(in srgb, var(--surface-alt), black 10%);
@@ -24,6 +25,15 @@
   &.game-selected {
     background-color: var(--surface-hover);
     border-left-color: var(--accent-hover);
+  }
+
+  &.dragging {
+    opacity: 0.4;
+  }
+
+  &.drag-over {
+    border-left-color: var(--accent-hover);
+    background-color: var(--surface-hover);
   }
 
   &__icon {

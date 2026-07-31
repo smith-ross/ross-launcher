@@ -57,6 +57,40 @@ interface ChooseInstallDirResult {
   error?: string
 }
 
+interface CustomGameDefinition {
+  id: string
+  name: string
+  iconUri: string
+  coverUri?: string
+  isCustom: true
+}
+
+interface PickFileResult {
+  path?: string
+}
+
+interface PickImageResult {
+  dataUri?: string
+  error?: string
+}
+
+interface AddCustomGameInput {
+  name: string
+  executablePath: string
+  iconUri: string
+  coverUri?: string
+}
+
+interface AddCustomGameResult {
+  success: boolean
+  game?: CustomGameDefinition
+  error?: string
+}
+
+interface RemoveCustomGameResult {
+  success: boolean
+}
+
 declare global {
   interface Window {
     windowAPI: {
@@ -72,6 +106,15 @@ declare global {
     settingsAPI: {
       getInstallDir: () => Promise<string>
       chooseInstallDir: () => Promise<ChooseInstallDirResult>
+      getGameOrder: () => Promise<string[]>
+      setGameOrder: (order: string[]) => Promise<void>
+    }
+    customGamesAPI: {
+      list: () => Promise<CustomGameDefinition[]>
+      pickExecutable: () => Promise<PickFileResult>
+      pickImage: () => Promise<PickImageResult>
+      add: (input: AddCustomGameInput) => Promise<AddCustomGameResult>
+      remove: (id: string) => Promise<RemoveCustomGameResult>
     }
     gameAPI: {
       getStatus: (id: string) => Promise<GameStatusResult>

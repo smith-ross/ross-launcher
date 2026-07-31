@@ -2,17 +2,30 @@ import { useCallback } from 'react'
 import { useAppDispatch } from '@renderer/store/hooks'
 import { Game, updateGame } from '@renderer/store/slices/games-slice'
 
-// Centralizes the install/update/play flow so GameTile-level "auto-check on
-// load" and SelectedGame's buttons stay in sync via the same Redux state.
 const useGameLibrary = () => {
   const dispatch = useAppDispatch()
 
   const checkGame = useCallback(
     async (game: Game) => {
-      const { id, repoOwner, repoName, assetPattern, executable } = game
+      const { id, repoOwner, repoName, assetPattern, executable, isCustom } = game
       dispatch(updateGame({ id, changes: { status: 'checking', error: undefined } }))
 
       const status = await window.gameAPI.getStatus(id)
+
+      if (isCustom) {
+        dispatch(
+          updateGame({
+            id,
+            changes: {
+              installedVersion: status.installedVersion,
+              status: status.installed ? 'up-to-date' : 'error',
+              error: status.installed ? undefined : 'Executable not found'
+            }
+          })
+        )
+        return
+      }
+
       dispatch(
         updateGame({
           id,
@@ -23,10 +36,19 @@ const useGameLibrary = () => {
         })
       )
 
-      const check = await window.gameAPI.checkForUpdate({ id, repoOwner, repoName, assetPattern, executable })
+      const check = await window.gameAPI.checkForUpdate({
+        id,
+        repoOwner: repoOwner ?? '',
+        repoName: repoName ?? '',
+        assetPattern,
+        executable
+      })
       if (!check.ok || !check.result) {
         dispatch(
-          updateGame({ id, changes: { status: 'error', error: check.error ?? 'Failed to check for updates' } })
+          updateGame({
+            id,
+            changes: { status: 'error', error: check.error ?? 'Failed to check for updates' }
+          })
         )
         return
       }
@@ -52,9 +74,20 @@ const useGameLibrary = () => {
   const downloadGame = useCallback(
     async (game: Game) => {
       const { id, repoOwner, repoName, assetPattern, executable } = game
-      dispatch(updateGame({ id, changes: { status: 'downloading', downloadProgress: 0, error: undefined } }))
+      dispatch(
+        updateGame({
+          id,
+          changes: { status: 'downloading', downloadProgress: 0, error: undefined }
+        })
+      )
 
-      const result = await window.gameAPI.download({ id, repoOwner, repoName, assetPattern, executable })
+      const result = await window.gameAPI.download({
+        id,
+        repoOwner: repoOwner ?? '',
+        repoName: repoName ?? '',
+        assetPattern,
+        executable
+      })
       if (result.success) {
         dispatch(
           updateGame({
@@ -69,7 +102,10 @@ const useGameLibrary = () => {
         )
       } else {
         dispatch(
-          updateGame({ id, changes: { status: 'error', error: result.error, downloadProgress: undefined } })
+          updateGame({
+            id,
+            changes: { status: 'error', error: result.error, downloadProgress: undefined }
+          })
         )
       }
     },

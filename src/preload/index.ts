@@ -26,7 +26,24 @@ contextBridge.exposeInMainWorld('launcherAPI', {
 
 contextBridge.exposeInMainWorld('settingsAPI', {
   getInstallDir: () => ipcRenderer.invoke('settings:get-install-dir'),
-  chooseInstallDir: () => ipcRenderer.invoke('settings:choose-install-dir')
+  chooseInstallDir: () => ipcRenderer.invoke('settings:choose-install-dir'),
+  getGameOrder: () => ipcRenderer.invoke('settings:get-game-order'),
+  setGameOrder: (order: string[]) => ipcRenderer.invoke('settings:set-game-order', order)
+})
+
+export interface AddCustomGameInput {
+  name: string
+  executablePath: string
+  iconUri: string
+  coverUri?: string
+}
+
+contextBridge.exposeInMainWorld('customGamesAPI', {
+  list: () => ipcRenderer.invoke('custom-games:list'),
+  pickExecutable: () => ipcRenderer.invoke('custom-games:pick-executable'),
+  pickImage: () => ipcRenderer.invoke('custom-games:pick-image'),
+  add: (input: AddCustomGameInput) => ipcRenderer.invoke('custom-games:add', input),
+  remove: (id: string) => ipcRenderer.invoke('custom-games:remove', id)
 })
 
 contextBridge.exposeInMainWorld('gameAPI', {

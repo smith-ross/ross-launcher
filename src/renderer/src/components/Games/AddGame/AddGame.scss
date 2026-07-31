@@ -1,0 +1,120 @@
+.add-game-trigger {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: var(--radius-sm);
+  color: var(--text-muted);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--surface-hover);
+    color: var(--font-color-default);
+  }
+}
+
+.add-game-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.add-game-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+
+  &__label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--text-muted);
+  }
+
+  &__input {
+    all: unset;
+    box-sizing: border-box;
+    width: 100%;
+    background-color: var(--primary);
+    color: var(--font-color-default);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    font-size: 13px;
+
+    &::placeholder {
+      color: var(--text-muted);
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__path {
+    flex: 1;
+    min-width: 0;
+    font-size: 13px;
+    color: var(--font-color-default);
+    background-color: var(--primary);
+    border-radius: var(--radius-sm);
+    padding: 8px 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__preview {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: var(--radius-sm);
+    background-color: var(--primary);
+    background-size: cover;
+    background-position: center;
+
+    &--wide {
+      width: 100px;
+      height: 40px;
+    }
+  }
+
+  &__browse {
+    all: unset;
+    box-sizing: border-box;
+    flex-shrink: 0;
+    background-color: var(--surface-alt);
+    color: var(--font-color-default);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: var(--radius);
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--surface-hover);
+    }
+  }
+
+  &__hint {
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+}
+
+.add-game-error {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.add-game-submit.ross-btn {
+  width: 100%;
+  min-width: 0;
+}

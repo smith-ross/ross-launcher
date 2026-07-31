@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from 'react'
+import Modal from '@renderer/components/Modal/Modal'
 import './Settings.scss'
 
 const Settings = () => {
@@ -34,33 +35,23 @@ const Settings = () => {
       </button>
 
       {isOpen && (
-        <div className="settings-overlay" onClick={() => setIsOpen(false)}>
-          <div className="settings-modal" onClick={(e) => e.stopPropagation()}>
-            <div className="settings-modal__header">
-              <span className="settings-modal__title">Settings</span>
-              <button
-                className="settings-modal__close"
-                onClick={() => setIsOpen(false)}
-                title="Close"
-                type="button"
-              >
-                &#10005;
-              </button>
-            </div>
-
-            <div className="settings-modal__row">
-              <span className="settings-modal__label">Install location</span>
-              <span className="settings-modal__value" title={installDir}>
-                {installDir}
-              </span>
-              <button className="settings-modal__change" onClick={onChangeLocation} type="button">
-                Change…
-              </button>
-            </div>
-
-            {error && <span className="settings-modal__error">{error}</span>}
+        <Modal title="Settings" onClose={() => setIsOpen(false)}>
+          <div className="settings-row">
+            <span className="settings-row__label">Install location</span>
+            <span className="settings-row__value" title={installDir}>
+              {installDir}
+            </span>
+            <button className="settings-row__change" onClick={onChangeLocation} type="button">
+              Change…
+            </button>
           </div>
-        </div>
+
+          <p className="settings-hint">
+            Applies to new downloads and updates. Games already installed stay where they are.
+          </p>
+
+          {error && <span className="settings-error">{error}</span>}
+        </Modal>
       )}
     </>
   )

@@ -2,7 +2,15 @@ import { app, BrowserWindow, ipcMain } from 'electron'
 import path from 'path'
 import { checkForUpdate, downloadGame, playGame, getStatus, GameConfig } from './lib/gameManager'
 import { checkForLauncherUpdate, downloadAndInstallLauncherUpdate } from './lib/selfUpdater'
-import { getInstallDir, chooseInstallDir } from './lib/settings'
+import { getInstallDir, chooseInstallDir, getGameOrder, setGameOrder } from './lib/settings'
+import {
+  listCustomGames,
+  pickExecutable,
+  pickImage,
+  addCustomGame,
+  removeCustomGame,
+  AddCustomGameInput
+} from './lib/customGames'
 
 let win: BrowserWindow
 
@@ -30,11 +38,9 @@ function createWindow() {
 app.whenReady().then(createWindow)
 app.on('window-all-closed', () => app.quit())
 
-// Window control handlers
 ipcMain.on('window-close', () => win.close())
 ipcMain.on('window-minimize', () => win.minimize())
 
-// Game install/update/launch handlers — see src/main/lib/gameManager.ts
 ipcMain.handle('games:get-status', (_event, id: string) => getStatus(id))
 
 ipcMain.handle('games:check-update', async (_event, config: GameConfig) => {
@@ -53,7 +59,6 @@ ipcMain.handle('games:download', async (event, config: GameConfig) => {
 
 ipcMain.handle('games:play', (_event, id: string) => playGame(id))
 
-// Launcher self-update handlers — see src/main/lib/selfUpdater.ts
 ipcMain.handle('launcher:get-version', () => app.getVersion())
 
 ipcMain.handle('launcher:check-update', async () => {
@@ -70,6 +75,13 @@ ipcMain.handle('launcher:install-update', async (event) => {
   })
 })
 
-// Settings handlers — see src/main/lib/settings.ts
 ipcMain.handle('settings:get-install-dir', () => getInstallDir())
 ipcMain.handle('settings:choose-install-dir', () => chooseInstallDir(win))
+ipcMain.handle('settings:get-game-order', () => getGameOrder())
+ipcMain.handle('settings:set-game-order', (_event, order: string[]) => setGameOrder(order))
+
+ipcMain.handle('custom-games:list', () => listCustomGames())
+ipcMain.handle('custom-games:pick-executable', () => pickExecutable(win))
+ipcMain.handle('custom-games:pick-image', () => pickImage(win))
+ipcMain.handle('custom-games:add', (_event, input: AddCustomGameInput) => addCustomGame(input))
+ipcMain.handle('custom-games:remove', (_event, id: string) => removeCustomGame(id))

@@ -4,7 +4,6 @@ import path from 'path'
 import { spawn } from 'child_process'
 import { fetchLatestRelease, pickAsset, downloadAsset, compareVersions } from './github'
 
-// The launcher's own GitHub repo — update if this project is ever forked/renamed.
 const LAUNCHER_REPO_OWNER = 'smith-ross'
 const LAUNCHER_REPO_NAME = 'ross-launcher'
 

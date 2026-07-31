@@ -2,9 +2,6 @@ import { app } from 'electron'
 import fs from 'fs'
 import path from 'path'
 
-// Tracks what's actually installed on disk, keyed by game id. This is the
-// launcher's source of truth for "installed version" — separate from
-// whatever the store/UI thinks, so it survives app restarts.
 export interface ManifestEntry {
   version: string
   executablePath: string
@@ -33,6 +30,14 @@ export function getManifestEntry(id: string): ManifestEntry | undefined {
 export function writeManifestEntry(id: string, entry: ManifestEntry): void {
   const manifest = readManifest()
   manifest[id] = entry
+  fs.mkdirSync(path.dirname(manifestPath()), { recursive: true })
+  fs.writeFileSync(manifestPath(), JSON.stringify(manifest, null, 2))
+}
+
+export function removeManifestEntry(id: string): void {
+  const manifest = readManifest()
+  if (!(id in manifest)) return
+  delete manifest[id]
   fs.mkdirSync(path.dirname(manifestPath()), { recursive: true })
   fs.writeFileSync(manifestPath(), JSON.stringify(manifest, null, 2))
 }

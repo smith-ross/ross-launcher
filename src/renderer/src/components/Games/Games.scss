@@ -17,16 +17,21 @@
   flex-direction: column;
   min-height: 0;
 
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid var(--accent);
+  }
+
   &__title {
     color: var(--font-color-default);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.08em;
     text-transform: uppercase;
-    display: block;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-    border-bottom: 2px solid var(--accent);
   }
 
   &__list {

@@ -1,3 +1,4 @@
+import { shell } from 'electron'
 import fs from 'fs'
 import path from 'path'
 import { spawn } from 'child_process'
@@ -150,11 +151,18 @@ export async function downloadGame(
   }
 }
 
-export function playGame(id: string): PlayResult {
+const SHELL_OPEN_EXTENSIONS = new Set(['.url', '.lnk'])
+
+export async function playGame(id: string): Promise<PlayResult> {
   const entry = getManifestEntry(id)
   if (!entry) return { success: false, error: 'Game is not installed' }
   if (!fs.existsSync(entry.executablePath)) {
     return { success: false, error: 'Installed executable could not be found' }
+  }
+
+  if (SHELL_OPEN_EXTENSIONS.has(path.extname(entry.executablePath).toLowerCase())) {
+    const error = await shell.openPath(entry.executablePath)
+    return error ? { success: false, error } : { success: true }
   }
 
   try {

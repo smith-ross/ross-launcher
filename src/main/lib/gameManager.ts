@@ -1,5 +1,8 @@
 import { shell } from 'electron'
-import fs from 'fs'
+// Electron's patched `fs` treats any *.asar file as a folder, which breaks extracting, deleting
+// and scanning installs of Electron apps (e.g. RossEngine Studio's resources/app.asar).
+// `original-fs` is the unpatched Node fs, so installs are handled as plain files.
+import fs from 'original-fs'
 import path from 'path'
 import { spawn } from 'child_process'
 import AdmZip from 'adm-zip'
@@ -124,7 +127,7 @@ export async function downloadGame(
 
     let executablePath: string | undefined
     if (asset.name.toLowerCase().endsWith('.zip')) {
-      const zip = new AdmZip(tempPath)
+      const zip = new AdmZip(tempPath, { fs })
       zip.extractAllTo(installDir, true)
       fs.rmSync(tempPath, { force: true })
       executablePath = findExecutable(installDir, config.executable)

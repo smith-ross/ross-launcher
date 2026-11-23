@@ -3,7 +3,10 @@ import { defineConfig } from 'electron-vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  main: {},
+  main: {
+    // Electron's unpatched fs (see src/main/lib/gameManager.ts), provided by Electron at runtime
+    build: { rollupOptions: { external: ['original-fs'] } }
+  },
   preload: {},
   renderer: {
     resolve: {

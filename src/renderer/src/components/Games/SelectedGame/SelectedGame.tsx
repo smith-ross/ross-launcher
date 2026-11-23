@@ -37,6 +37,7 @@ const SelectedGame = () => {
   const { status, downloadProgress, error, installedVersion, latestVersion } = selectedGame
   const isConfirmingRemove = confirmingRemoveId === selectedGame.id
 
+  const isApp = selectedGame.kind === 'app'
   const isPlayable = status === 'up-to-date'
   const isDownloading = status === 'downloading'
   const showInstallButton = status !== 'up-to-date' && status !== 'checking'
@@ -70,10 +71,12 @@ const SelectedGame = () => {
         <div className="game-actions">
           <Button
             className="play-btn"
-            text="Play"
+            text={isApp ? 'Open' : 'Play'}
             disabled={!isPlayable}
             title={
-              status === 'update-available' ? 'Update the game before you can play' : undefined
+              status === 'update-available'
+                ? `Update ${isApp ? 'it before you can open it' : 'the game before you can play'}`
+                : undefined
             }
             onClick={() => playGame(selectedGame)}
           />

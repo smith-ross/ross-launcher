@@ -15,6 +15,8 @@ export interface GameDefinition {
   /** Relative path (inside the extracted install) to the game's executable, if known. */
   executable?: string
   isCustom?: boolean
+  /** 'app' for tools such as RossEngine Studio: the play button reads "Open". */
+  kind?: 'game' | 'app'
 }
 
 export interface Game extends GameDefinition {

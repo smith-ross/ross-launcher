@@ -6,5 +6,16 @@
     "coverUri": "./godot-banner.png",
     "repoOwner": "smith-ross",
     "repoName": "godot-demo-game"
+  },
+  {
+    "id": "rossengine-studio",
+    "name": "RossEngine Studio",
+    "kind": "app",
+    "iconUri": "./rossengine.svg",
+    "coverUri": "./rossengine-banner.svg",
+    "repoOwner": "smith-ross",
+    "repoName": "rossengine-3d",
+    "assetPattern": "RossEngine-Studio-win32",
+    "executable": "RossEngine Studio.exe"
   }
 ]
